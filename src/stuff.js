@@ -1,21 +1,38 @@
 const Launchpad = require('launchpad-mini')
 
-pad = new Launchpad()
+const pad = new Launchpad()
 
+function testSequence() {
+	console.log('Clearing...')
+	pad.sendRaw([240, 0, 32, 41, 2, 13, 7, 247])
+	pad.sendRaw([240, 0, 32, 41, 2, 13, 8, 1, 0, 1, 247])
 
-async function setup() {
+	console.log('Beginning test sequence...')
+
+	// Brightness
+	for(var i=0; i<100; i++) {
+		for(var x=0; x<127; x++) {
+			pad.reset(x)
+		}
+
+		for(var x=127; x>0; x--) {
+			pad.reset(x)
+		}
+	}
+
+	console.log('Test sequence concluded.')
+	pad.sendRaw([240, 0, 32, 41, 2, 13, 7, 247])
+	pad.sendRaw([240, 0, 32, 41, 2, 13, 8, 1, 0, 1, 247])
 
 	return
 }
 
 async function main() {
-	await setup()
+	let ports = pad.availablePorts
+	let inputPort = ports.input[1].portNumber
+	let outputPort = ports.output[1].portNumber
 
-	pad.reset(2)
-
-	pad.on('key', k => {
-		pad.col(k.pressed ? pad.red : pad.green, k)
-	})
+	pad.connect(inputPort, outputPort).then(testSequence())
 }
 
 

@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "launchpad mini mk3",
   "dependencies": {
-    "launchpad-mini": "^2.3.0"
+    "launchpad-mini": "^2.3.0",
+    "rocketry": "^0.7.2"
   },
   "devDependencies": {},
   "scripts": {
